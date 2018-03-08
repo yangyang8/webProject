@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<!-- 这个service层主要是配置我们的dao相关的对象的 和事务相关的操作的
+		因为我们service层是具体的业务层，有时要涉及到多个dao(多个表)的操作，为了保证数据的唯一性，要开启事的操作
+	-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 要配置这个事务，那么则要配置一个数据源给他 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+    <!-- 开启支持注解扫描的功能,这样子我们的service就可以使用注解的方式进行配置注入spring容器中 -->
+    <context:component-scan base-package="com.hailong.o2o.service"></context:component-scan>
+    <!-- 要开启支持注解开启事务的处理操作 ,这样子就可以在类当中使用注解来开启事务的操作-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

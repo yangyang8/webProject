@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 在这个配置文件当中主要是做一个全局的配置，因为其他的配置在我们的spring的配置文件当中可以替代了 -->
+	<settings>
+		<!-- 配置开启使用jdbc的getGeneratedKeys获取数据库自增主键值 -->
+		<setting name="useGeneratedKeys" value="true"/>
+		<!-- 开启支持使用列名替换列别名的操作 -->
+		<setting name="useColumnLabel" value="true"/>
+		<!-- 开启驼峰命名转换也就是Table{create_time => createTime},让中间的_不存在 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+</configuration>
