@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import jdk.nashorn.internal.runtime.linker.Bootstrap;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,5 +20,6 @@ public class AreaServiceTest extends BaseTest{
 	public void testServiceQueryList(){
 		List<Area> list=areaService.queryAreaList();
 		assertEquals("西区",list.get(0).getAreaName());
+
 	}
 }
