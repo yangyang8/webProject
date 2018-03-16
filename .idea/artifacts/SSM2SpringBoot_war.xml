@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SSM2SpringBoot:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SSM2SpringBoot.war">
+      <element id="artifact" artifact-name="SSM2SpringBoot:war exploded" />
+    </root>
+  </artifact>
+</component>

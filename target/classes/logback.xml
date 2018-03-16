@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 下面是开始进行配置我们的logback的配置日志的信息的，他的根标签为configruation 
+scan="true" 表示的当中我们日志配置文件修改时会自动重要加载
+scanPeriod="60 seconds" 每隔60s进行查看一个这个配置文件是否被修改
+这个的单位默认是ms
+-->
+<configuration scan="true" scanPeriod="60 seconds">
+	<!-- 进行定义一些全局的常量，方便我们的下面进行使用 
+		在logback中的日志级别从小到在的是
+		trace<debug<info<warn<error
+		如果是trace那么则会调用我们的debug,info，warn，error
+	-->
+	<!-- 定义日志级别 -->
+	<property name="log.level" value="debug"></property>
+	<!-- 定义日志的存储时间 ,单位为天-->
+	<property name="log.maxHistory" value="30"></property>
+	<!-- 定义我们的日志的存储的地方 -->
+	<property name="log.filePath" value="${catalina.base}/logs/webapps"></property>
+	<!-- 定义日志的存储的格式 
+		%d指定日期格式
+		[%thread] 指定线程名
+		%-5level 表示的是右移5位进行显示日志级别
+		%logger{50} 表示的是具体的类名
+		%msg 表示的是具体的日志信息
+		%n:表示的是换行显示日志信息
+	-->
+	<property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}-%msg%n"></property>
+	<!-- 下面进行配置我们的具体的appender的配置 -->
+	<!-- 配置控制台appender,也就是把数据输出到控制台 -->
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+	     <!-- 指定日志输出到控件台的格式 -->
+	     <encoder>
+	     	<pattern>${log.pattern}</pattern>
+	     </encoder>
+	</appender>
+	<!-- 下面进行开始配置下面的三大日志级别，分别输出到具体的文件当中 -->
+	
+	<!-- debug的级别的日志设置 -->
+	<appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <!-- 文件具体的存储路径 -->
+	    <file>${log.filePath}/debug/debug.log</file>
+	    <!-- rolling的策略 
+	    	这个滚动的策略主要是
+	    	配置文件存储的路径的设置格式，按照日期来生成文件
+	    	这个日志的保存时间
+	    -->
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    	<!-- 默认是可以压缩的 -->
+	        <fileNamePattern>${log.filePath}/debug/debug.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+	   		<!-- 保存的最大历史时间 -->
+	   		<maxHistory>${log.maxHistory}</maxHistory>
+	    </rollingPolicy>
+	    	<!-- 设置debug的编码的级别的日志的输出的格式 -->
+	    	<encoder>
+	    		<pattern>${log.pattern}</pattern>
+	    	</encoder>
+	    	<!-- 下面还要再配置一些过滤器，主要是配置把日志不是debug级别的
+	    	数据给过滤了,只要debug级别的数据 -->
+	    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+	    		<!-- 这个levle也只有下面的这样些值，但是这个的大小写是不敏感的
+	    		ALL
+	    		TRACE
+	    		DEBUG
+	    		INFO
+	    		WARN
+	    		ERROR
+	    		OFF
+	    		 -->
+	    	    <level>DEBUG</level>
+	    	    <!-- 下面的onMatch和onMismatch只有下面的
+	    	    DENY, NEUTRAL, ACCEPT三种值 -->
+	    	    <onMatch>ACCEPT</onMatch>
+	    		<onMismatch>DENY</onMismatch>
+	    	</filter>
+	</appender>
+		<!-- INFO的级别的日志设置 -->
+	<appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <!-- 文件具体的存储路径 -->
+	    <file>${log.filePath}/info/info.log</file>
+	    <!-- rolling的策略 
+	    	这个滚动的策略主要是
+	    	配置文件存储的路径的设置格式，按照日期来生成文件
+	    	这个日志的保存时间
+	    -->
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    	<!-- 默认是可以压缩的 -->
+	        <fileNamePattern>${log.filePath}/info/info.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+	   		<!-- 保存的最大历史时间 -->
+	   		<maxHistory>${log.maxHistory}</maxHistory>
+	    </rollingPolicy>
+	    	<!-- 设置debug的编码的级别的日志的输出的格式 -->
+	    	<encoder>
+	    		<pattern>${log.pattern}</pattern>
+	    	</encoder>
+	    	<!-- 下面还要再配置一些过滤器，主要是配置把日志不是debug级别的
+	    	数据给过滤了,只要debug级别的数据 -->
+	    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+	    		<!-- 这个levle也只有下面的这样些值，但是这个的大小写是不敏感的
+	    		ALL
+	    		TRACE
+	    		DEBUG
+	    		INFO
+	    		WARN
+	    		ERROR
+	    		OFF
+	    		 -->
+	    	    <level>info</level>
+	    	    <!-- 下面的onMatch和onMismatch只有下面的
+	    	    DENY, NEUTRAL, ACCEPT三种值 -->
+	    	    <onMatch>ACCEPT</onMatch>
+	    		<onMismatch>DENY</onMismatch>
+	    	</filter>
+	</appender>
+			<!-- error的级别的日志设置 -->
+	<appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <!-- 文件具体的存储路径 -->
+	    <file>${log.filePath}/error/error.log</file>
+	    <!-- rolling的策略 
+	    	这个滚动的策略主要是
+	    	配置文件存储的路径的设置格式，按照日期来生成文件
+	    	这个日志的保存时间
+	    -->
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	    	<!-- 默认是可以压缩的,每隔一天生成一个log.gz的压缩文件-->
+	        <fileNamePattern>${log.filePath}/error/error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+	   		<!-- 保存的最大历史时间 -->
+	   		<maxHistory>${log.maxHistory}</maxHistory>
+	    </rollingPolicy>
+	    	<!-- 设置debug的编码的级别的日志的输出的格式 -->
+	    	<encoder>
+	    		<pattern>${log.pattern}</pattern>
+	    	</encoder>
+	    	<!-- 下面还要再配置一些过滤器，主要是配置把日志不是debug级别的
+	    	数据给过滤了,只要debug级别的数据 -->
+	    	<filter class="ch.qos.logback.classic.filter.LevelFilter">
+	    		<!-- 这个levle也只有下面的这样些值，但是这个的大小写是不敏感的
+	    		ALL
+	    		TRACE
+	    		DEBUG
+	    		INFO
+	    		WARN
+	    		ERROR
+	    		OFF
+	    		 -->
+	    	    <level>error</level>
+	    	    <!-- 下面的onMatch和onMismatch只有下面的
+	    	    DENY, NEUTRAL, ACCEPT三种值 -->
+	    	    <onMatch>ACCEPT</onMatch>
+	    		<onMismatch>DENY</onMismatch>
+	    	</filter>
+	</appender>
+	<!-- 下面开始配置logger的对象，这个对象只要是用于存储日志的对象的，同时告诉logBack如何去调用那个appender对象 
+		参数解释如下
+		logger标签中的这个logback的配置对于com.hailong.o2o下面的包中的所有的类文件都有效	
+		level表示的设置当前作用于com.hailong.o2o包下的日志的级别
+		additivity：表示的是继承于下面的logger的父标签root,那么则root中的设置日志级别在这个logger当中也可以适用
+		-->
+	<logger name="com.hailong.o2o" level="${log.levle}" additivity="true">
+		<appender-ref ref="debugAppender"></appender-ref>
+		<appender-ref ref="infoAppender"></appender-ref>
+		<appender-ref ref="errorAppender"></appender-ref>
+	</logger>
+	<!-- root也是一个特殊的logger的对象，其中这个additivity=true表示的是
+	上面的这个logger对象会继承下面的这个root -->
+	<root level="info">
+		<appender-ref ref="consoleAppender"></appender-ref>
+	</root>
+</configuration>
